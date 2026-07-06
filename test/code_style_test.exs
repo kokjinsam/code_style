@@ -9,4 +9,8 @@ defmodule CodeStyleTest do
   test "registers ExSlop recommended checks" do
     assert {ExSlop.Check.Warning.QueryInEnumMap, []} in CodeStyle.checks()
   end
+
+  test "registers migration safety checks" do
+    assert {ExcellentMigrations.CredoCheck.MigrationsSafety, []} in CodeStyle.checks()
+  end
 end

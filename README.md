@@ -23,8 +23,8 @@ Then load the Credo plugin in `.credo.exs`:
 }
 ```
 
-The plugin registers the shared Credo policy, ExSlop checks, and the custom
-checks below.
+The plugin registers the shared Credo policy, ExSlop checks, migration safety,
+and the custom checks below.
 
 ## Custom Checks
 

@@ -33,6 +33,7 @@ defmodule CodeStyle.MixProject do
   defp deps do
     [
       {:credo, "~> 1.7", runtime: false},
+      {:excellent_migrations, "~> 0.1.10", runtime: false},
       {:ex_slop, "~> 0.4.2", runtime: false},
       {:styler, "~> 1.11", only: [:dev, :test], runtime: false}
     ]

@@ -137,6 +137,10 @@ defmodule CodeStyle do
     {CodeStyle.Check.Warning.RepoInsideLoop, []}
   ]
 
+  @migration_checks [
+    {ExcellentMigrations.CredoCheck.MigrationsSafety, []}
+  ]
+
   @ex_slop_opt_in_checks [
     {ExSlop.Check.Readability.DocFalseOnPublicFunction, []},
     {ExSlop.Check.Readability.ObviousComment, []},
@@ -148,6 +152,7 @@ defmodule CodeStyle do
 
   @checks @credo_checks ++
             @code_style_checks ++
+            @migration_checks ++
             Enum.map(ExSlop.recommended_checks(), &{&1, []}) ++
             @ex_slop_opt_in_checks
 
