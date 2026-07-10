@@ -24,7 +24,7 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
         run: |
-          version="$(mix run --no-start -e 'IO.write(Mix.Project.config()[:version])')"
+          version="$(mix run --no-start --no-compile -e 'IO.write(Mix.Project.config()[:version])')"
           test "$TAG" = "v$version"
       - run: mix check
       - run: mix docs
