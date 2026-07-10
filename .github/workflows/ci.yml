@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }} / ${{ matrix.dependencies }} deps
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        elixir: ["1.18.0", "1.20.0"]
+        otp: ["27"]
+        dependencies: [locked, latest]
+
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - if: matrix.dependencies == 'latest'
+        run: mix deps.unlock --all
+      - run: mix deps.get
+      - run: mix check
+      - if: matrix.dependencies == 'locked' && matrix.elixir == '1.20.0'
+        run: mix docs
+      - if: matrix.dependencies == 'locked' && matrix.elixir == '1.20.0'
+        run: mix hex.build --unpack --output _build/hex

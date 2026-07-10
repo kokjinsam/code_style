@@ -7,7 +7,7 @@ Shared Credo policy and custom checks for Elixir codebases.
 Add `code_style` to a consuming Mix project:
 
 ```elixir
-{:code_style, github: "kokjinsam/code_style", only: [:dev, :test], runtime: false}
+{:code_style, "~> 0.1.0", only: [:dev, :test], runtime: false}
 ```
 
 Then load the Credo plugin in `.credo.exs`:

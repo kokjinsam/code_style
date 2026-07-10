@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: hex-publish
+
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124
+        with:
+          elixir-version: "1.20.0"
+          otp-version: "27"
+      - run: mix deps.get
+      - name: Verify tag matches the Mix version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="$(mix run --no-start -e 'IO.write(Mix.Project.config()[:version])')"
+          test "$TAG" = "v$version"
+      - run: mix check
+      - run: mix docs
+      - run: mix hex.build --unpack
+      - run: mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" --generate-notes --title "$TAG"

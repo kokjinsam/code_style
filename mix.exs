@@ -10,6 +10,8 @@ defmodule CodeStyle.MixProject do
       version: @version,
       elixir: "~> 1.18",
       description: "Personal Credo checks for Elixir codebases.",
+      source_url: @source_url,
+      homepage_url: @source_url,
       aliases: aliases(),
       package: package(),
       docs: docs(),
@@ -35,6 +37,7 @@ defmodule CodeStyle.MixProject do
       {:credo, "~> 1.7", runtime: false},
       {:excellent_migrations, "~> 0.1.10", runtime: false},
       {:ex_slop, "~> 0.4.2", runtime: false},
+      {:ex_doc, "~> 0.40.0", only: :dev, runtime: false},
       {:styler, "~> 1.11", only: [:dev, :test], runtime: false}
     ]
   end
@@ -52,13 +55,14 @@ defmodule CodeStyle.MixProject do
 
   defp package do
     [
+      licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
     ]
   end
 
   defp docs do
     [
-      extras: ["README.md"],
+      extras: ["README.md", "CHANGELOG.md"],
       main: "readme",
       source_ref: "v#{@version}",
       source_url: @source_url
