@@ -150,6 +150,7 @@ defmodule CodeStyle.Check.Warning.RepoInsideLoop do
 
   defp repo_segments?([:Repo]), do: true
   defp repo_segments?([_segment | remaining_segments]), do: repo_segments?(remaining_segments)
+  defp repo_segments?([]), do: false
 
   defp alias_segments({:__aliases__, _meta, segments}), do: segments
   defp alias_segments(atom) when is_atom(atom), do: [atom]

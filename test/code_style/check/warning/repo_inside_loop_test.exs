@@ -126,4 +126,19 @@ defmodule CodeStyle.Check.Warning.RepoInsideLoopTest do
     |> run_check(RepoInsideLoop)
     |> refute_issues()
   end
+
+  test "does not report non-Repo modules using Repo function names" do
+    """
+    defmodule Example do
+      def unload(modules) do
+        for module <- modules do
+          :code.delete(module)
+        end
+      end
+    end
+    """
+    |> to_source_file()
+    |> run_check(RepoInsideLoop)
+    |> refute_issues()
+  end
 end
