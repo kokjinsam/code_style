@@ -28,7 +28,8 @@ Then load the Credo plugin in `.credo.exs`:
 ```
 
 The plugin registers the shared Credo policy, ExSlop checks, migration safety,
-and the custom checks below.
+and the custom checks below. It does not override Credo's file discovery;
+consuming projects can define their own `files` configuration when needed.
 
 ## Custom Checks
 

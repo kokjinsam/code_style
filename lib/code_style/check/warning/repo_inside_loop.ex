@@ -155,12 +155,12 @@ defmodule CodeStyle.Check.Warning.RepoInsideLoop do
     {Task.Supervisor, :start_child, 5, {2, 3, 4}}
   ]
 
-  @repo_functions ~w(
-    aggregate all all_by delete_all exists? get get! get_by get_by! one one!
-    stream update_all query query! delete delete! insert insert! insert_all
-    insert_or_update insert_or_update! preload reload reload! update update!
-    checkout transact transaction
-  )a
+  @repo_functions MapSet.new(~w(
+                      aggregate all all_by delete_all exists? get get! get_by get_by! one one!
+                      stream update_all query query! delete delete! insert insert! insert_all
+                      insert_or_update insert_or_update! preload reload reload! update update!
+                      checkout transact transaction
+                    )a)
 
   @impl Credo.Check
   def run(%SourceFile{} = source_file, params) do
@@ -247,7 +247,8 @@ defmodule CodeStyle.Check.Warning.RepoInsideLoop do
         acc = add_mfa_issue(acc, args, mfa_positions, context, call_meta, dot_meta)
         traverse(args, context, acc)
 
-      context == :repeated and function_name in @repo_functions and repo_module?(module_ast) ->
+      context == :repeated and MapSet.member?(@repo_functions, function_name) and
+          repo_module?(module_ast) ->
         acc = add_issue(acc, module_ast, function_name, call_meta, dot_meta)
         traverse(args, context, acc)
 
@@ -346,7 +347,8 @@ defmodule CodeStyle.Check.Warning.RepoInsideLoop do
     module_ast = Enum.at(args, module_position - 1)
     function_name = Enum.at(args, function_position - 1)
 
-    if context == :repeated and function_name in @repo_functions and repo_module?(module_ast) do
+    if context == :repeated and MapSet.member?(@repo_functions, function_name) and
+         repo_module?(module_ast) do
       add_issue(acc, module_ast, function_name, call_meta, dot_meta, column: false)
     else
       acc

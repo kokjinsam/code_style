@@ -209,6 +209,43 @@ defmodule CodeStyle.Check.Warning.RepoInsideLoopTest do
     |> refute_issues()
   end
 
+  test "does not treat non-callable or wrong-arity callback expressions as repeated" do
+    """
+    defmodule Example do
+      alias MyApp.Repo
+
+      def load(users) do
+        Enum.map(users, callback(Repo.all(User)))
+        Enum.min_max(users, fn user -> Repo.get(User, user.id) end)
+        Enum.with_index(users, callback(Repo.all(User)))
+      end
+    end
+    """
+    |> to_source_file()
+    |> run_check(RepoInsideLoop)
+    |> refute_issues()
+  end
+
+  test "follows callback variables through task bridges only in inherited repeated execution" do
+    """
+    defmodule Example do
+      alias MyApp.Repo
+
+      def load(groups, callback) do
+        Enum.map(groups, fn _group ->
+          Task.async(callback)
+          Task.start(fn -> Repo.get(User, 1) end)
+        end)
+
+        Task.async(fn -> Repo.get(User, 2) end)
+      end
+    end
+    """
+    |> to_source_file()
+    |> run_check(RepoInsideLoop)
+    |> assert_issue(%{line_no: 7, trigger: "Repo.get"})
+  end
+
   test "does not report Repo calls in a nested function returned by a callback" do
     """
     defmodule Example do

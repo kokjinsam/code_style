@@ -48,7 +48,7 @@ defmodule CodeStyle.MixProject do
         "format --check-formatted",
         "compile --warnings-as-errors",
         "credo --strict",
-        "test"
+        "test --cover"
       ]
     ]
   end

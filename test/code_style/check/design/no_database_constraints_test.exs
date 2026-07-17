@@ -330,4 +330,72 @@ defmodule CodeStyle.Check.Design.NoDatabaseConstraintsTest do
     |> run_check(NoDatabaseConstraints)
     |> refute_issues()
   end
+
+  test "discovers modules in top-level arguments while skipping top-level quoted code" do
+    """
+    quote do
+      defmodule QuotedMigration do
+        use Ecto.Migration
+        def change, do: create(source(), do: add(:quoted, :string, null: false))
+      end
+    end
+
+    wrapper(
+      defmodule WrappedMigration do
+        use Ecto.Migration
+        def change, do: create(source(), do: add(:wrapped, :string, null: false))
+      end
+    )
+
+    :done
+    """
+    |> to_source_file()
+    |> run_check(NoDatabaseConstraints)
+    |> assert_issue(%{line_no: 11, trigger: "add"})
+  end
+
+  test "keeps alias and import environments lexical in nested modules" do
+    """
+    defmodule Outer do
+      alias Ecto.Migration
+      use Migration
+
+      def change, do: create(source(), dynamic_options())
+
+      defmodule Inner do
+        import Ecto.Migration
+        def change, do: alter(source(), do: add(:inner, :string, null: false))
+      end
+
+      def later, do: create(source(), do: add(:outer, :string, size: 20))
+    end
+
+    defmodule ImportOptions do
+      import Ecto.Migration, warn: false
+      def change, do: create(source(), do: add(:imported, :string, default: ""))
+    end
+    """
+    |> to_source_file()
+    |> run_check(NoDatabaseConstraints)
+    |> assert_issues_match([
+      %{line_no: 9, trigger: "add"},
+      %{line_no: 12, trigger: "add"},
+      %{line_no: 17, trigger: "add"}
+    ])
+  end
+
+  test "ignores non-literal import pairs and unsupported alias options" do
+    """
+    defmodule UnsupportedDirectives do
+      alias Ecto.Migration, as: Nested.Migration
+      import Ecto.Migration, only: selected_pairs()
+      import Ecto.Migration, except: [:invalid]
+
+      def change, do: create(source(), do: add(:name, :string, null: false))
+    end
+    """
+    |> to_source_file()
+    |> run_check(NoDatabaseConstraints)
+    |> refute_issues()
+  end
 end
