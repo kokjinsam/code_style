@@ -2,6 +2,10 @@
 
 Shared Credo policy and custom checks for Elixir codebases.
 
+CodeStyle is intended to be used alongside ExDNA and Styler. Those tools are
+not bundled with this library and should be configured separately in consuming
+projects.
+
 ## Installation
 
 Add `code_style` to a consuming Mix project:
@@ -32,14 +36,6 @@ and the custom checks below.
   options in Ecto migration table blocks.
 - `CodeStyle.Check.Warning.RepoInsideLoop` flags direct Repo operations that
   can execute once per element across collection and concurrency boundaries.
-
-The module documentation defines each check's precise contract and scope.
-
-`RepoInsideLoop` is CodeStyle's sole owner of the `Enum.map` case also covered
-by `ExSlop.Check.Warning.QueryInEnumMap`, so CodeStyle excludes that check while
-retaining the rest of `ExSlop.recommended_checks/0`. Consumers that separately
-load both CodeStyle and ExSlop should disable `QueryInEnumMap` to avoid this
-deliberate overlap.
 
 ## Development
 
