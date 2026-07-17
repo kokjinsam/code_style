@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-17
+
 ### Changed
 
 - Reworked `RepoInsideLoop` around repeated execution across `Enum`, `Stream`,
@@ -15,7 +17,7 @@ All notable changes to this project will be documented in this file.
 - Left Credo file discovery to consumers and Credo's defaults instead of
   replacing it from the plugin.
 - Pinned the curated ExSlop policy to an explicit, version-stable check set.
-- Resolve exact Ecto migration aliases and imports lexically in
+- Resolved exact Ecto migration aliases and imports lexically in
   `NoDatabaseConstraints`, including `create_if_not_exists/2` and
   `add_if_not_exists/3`, while skipping quoted and unsupported forms.
 
