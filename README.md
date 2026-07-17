@@ -28,12 +28,18 @@ and the custom checks below.
 
 ## Custom Checks
 
-`CodeStyle.Check.Design.NoDatabaseConstraints` flags business-logic column options in
-Ecto migration table blocks.
+- `CodeStyle.Check.Design.NoDatabaseConstraints` flags business-logic column
+  options in Ecto migration table blocks.
+- `CodeStyle.Check.Warning.RepoInsideLoop` flags direct Repo operations that
+  can execute once per element across collection and concurrency boundaries.
 
-`CodeStyle.Check.Warning.RepoInsideLoop` flags direct `Repo.*` calls inside
-`Enum`, `Stream`, and `for` loop bodies where the code is likely to create N+1 query
-behavior.
+The module documentation defines each check's precise contract and scope.
+
+`RepoInsideLoop` is CodeStyle's sole owner of the `Enum.map` case also covered
+by `ExSlop.Check.Warning.QueryInEnumMap`, so CodeStyle excludes that check while
+retaining the rest of `ExSlop.recommended_checks/0`. Consumers that separately
+load both CodeStyle and ExSlop should disable `QueryInEnumMap` to avoid this
+deliberate overlap.
 
 ## Development
 

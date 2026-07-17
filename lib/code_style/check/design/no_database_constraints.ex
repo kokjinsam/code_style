@@ -8,8 +8,16 @@ defmodule CodeStyle.Check.Design.NoDatabaseConstraints do
       check: """
       Avoid setting business-logic column constraints in Ecto migrations.
 
-      Application-level validations should enforce nullability, defaults, and sizing
-      rules instead of pushing those concerns into `add/3` and `modify/3`.
+      This check runs in modules that directly `use Ecto.Migration`. Inside
+      `create table(...)` blocks it inspects `add/3`; inside `alter table(...)`
+      blocks it inspects both `add/3` and `modify/3`.
+
+      It reports the column options `:null`, `:default`, `:size`, `:precision`,
+      and `:scale`. Columns declared with `primary_key: true` are excluded because
+      their defaults and sizing are structural database concerns.
+
+      The policy keeps business validation at the application layer instead of
+      encoding it in migration column definitions.
       """
     ]
 

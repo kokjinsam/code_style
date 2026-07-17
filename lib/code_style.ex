@@ -150,10 +150,14 @@ defmodule CodeStyle do
     {ExSlop.Check.Refactor.PreferEnumSlice, []}
   ]
 
+  @ex_slop_recommended_checks ExSlop.recommended_checks()
+                              |> Enum.reject(&(&1 == ExSlop.Check.Warning.QueryInEnumMap))
+                              |> Enum.map(&{&1, []})
+
   @checks @credo_checks ++
             @code_style_checks ++
             @migration_checks ++
-            Enum.map(ExSlop.recommended_checks(), &{&1, []}) ++
+            @ex_slop_recommended_checks ++
             @ex_slop_opt_in_checks
 
   @default_config inspect(
