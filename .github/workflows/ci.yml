@@ -29,6 +29,8 @@ jobs:
       - if: matrix.dependencies == 'latest'
         run: mix deps.unlock --all
       - run: mix deps.get
+      - if: matrix.dependencies == 'locked' && matrix.elixir == '1.20.0'
+        run: cat mix.lock
       - run: mix check
       - if: matrix.dependencies == 'locked' && matrix.elixir == '1.20.0'
         run: mix docs
