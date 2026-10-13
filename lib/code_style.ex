@@ -41,6 +41,13 @@ defmodule CodeStyle do
     {Credo.Check.Readability.VariableNames, []},
     {Credo.Check.Readability.WithCustomTaggedTuple, []},
 
+    # Credo Backstops for Styler
+    #
+    # Styler recommends disabling BlockPipe because it rewrites block pipes while formatting.
+    # We intentionally keep it enabled because Styler does not currently rewrite every
+    # multi-stage pipeline ending in a block expression.
+    {Credo.Check.Readability.BlockPipe, []},
+
     # Refactoring Opportunities
     {Credo.Check.Refactor.ABCSize, false},
     {Credo.Check.Refactor.AppendSingleItem, []},
@@ -102,7 +109,6 @@ defmodule CodeStyle do
     {Credo.Check.Consistency.ParameterPatternMatching, false},
     {Credo.Check.Design.AliasUsage, false},
     {Credo.Check.Readability.AliasOrder, false},
-    {Credo.Check.Readability.BlockPipe, false},
     {Credo.Check.Readability.LargeNumbers, false},
     {Credo.Check.Readability.ModuleDoc, false},
     {Credo.Check.Readability.MultiAlias, false},
