@@ -67,7 +67,6 @@ defmodule CodeStyleTest do
   end
 
   test "registers custom Credo checks" do
-    assert {CodeStyle.Check.Design.NoDatabaseConstraints, []} in CodeStyle.checks()
     assert {RepoInsideLoop, []} in CodeStyle.checks()
   end
 

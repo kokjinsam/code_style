@@ -18,6 +18,11 @@ All notable changes to this project will be documented in this file.
 
 - Regression coverage for a multi-stage pipeline ending in a `case` block.
 
+### Removed
+
+- Removed `CodeStyle.Check.Design.NoDatabaseConstraints`; database-constraint
+  policy is no longer part of the shared CodeStyle checks.
+
 ## [0.1.1] - 2026-07-17
 
 ### Changed

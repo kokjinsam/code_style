@@ -33,8 +33,6 @@ consuming projects can define their own `files` configuration when needed.
 
 ## Custom Checks
 
-- `CodeStyle.Check.Design.NoDatabaseConstraints` flags business-logic column
-  options in Ecto migration table blocks.
 - `CodeStyle.Check.Warning.RepoInsideLoop` flags direct Repo operations that
   can execute once per element across collection and concurrency boundaries.
 

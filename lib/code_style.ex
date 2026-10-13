@@ -139,7 +139,6 @@ defmodule CodeStyle do
   ]
 
   @code_style_checks [
-    {CodeStyle.Check.Design.NoDatabaseConstraints, []},
     {CodeStyle.Check.Warning.RepoInsideLoop, []}
   ]
 
