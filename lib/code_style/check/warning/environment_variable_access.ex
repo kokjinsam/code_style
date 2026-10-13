@@ -21,7 +21,7 @@ defmodule CodeStyle.Check.Warning.EnvironmentVariableAccess do
 
   @impl Credo.Check
   def run(%SourceFile{filename: filename} = source_file, params) when is_binary(filename) do
-    if library_source?(filename) do
+    if library_source?(filename) and not configuration_source?(filename) do
       issue_meta = IssueMeta.for(source_file, params)
       Credo.Code.prewalk(source_file, &traverse(&1, &2, issue_meta))
     else
@@ -52,9 +52,6 @@ defmodule CodeStyle.Check.Warning.EnvironmentVariableAccess do
 
   defp traverse(ast, issues, _issue_meta), do: {ast, issues}
 
-  defp library_source?(filename) do
-    filename
-    |> Path.split()
-    |> Enum.any?(&(&1 == "lib"))
-  end
+  defp library_source?(filename), do: "lib" in Path.split(filename)
+  defp configuration_source?(filename), do: "config" in Path.split(filename)
 end
