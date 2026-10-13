@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-13
+
+### Changed
+
+- Re-enabled `Credo.Check.Readability.BlockPipe` as a lint backstop even though
+  Styler recommends disabling it, because Styler can leave some multi-stage
+  pipelines ending in block expressions formatted.
+- Kept `Credo.Check.Readability.SingleFunctionToBlockPipe` enabled alongside
+  the broader `BlockPipe` policy.
+
+### Added
+
+- Regression coverage for a multi-stage pipeline ending in a `case` block.
+
+### Removed
+
+- Removed `CodeStyle.Check.Design.NoDatabaseConstraints`; database-constraint
+  policy is no longer part of the shared CodeStyle checks.
+
 ## [0.1.1] - 2026-07-17
 
 ### Changed

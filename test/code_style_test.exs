@@ -2,6 +2,7 @@ defmodule CodeStyleTest do
   use Credo.Test.Case, async: false
 
   alias CodeStyle.Check.Warning.RepoInsideLoop
+  alias Credo.Check.Readability.BlockPipe
 
   @expected_ex_slop_checks [
     {ExSlop.Check.Warning.BlanketRescue, []},
@@ -42,8 +43,30 @@ defmodule CodeStyleTest do
     {ExSlop.Check.Refactor.PreferEnumSlice, []}
   ]
 
+  test "BlockPipe backstops multi-stage pipelines ending in block expressions" do
+    assert {BlockPipe, []} in CodeStyle.checks()
+
+    """
+    defmodule Example do
+      @moduledoc false
+
+      def classify(items) do
+        items
+        |> Enum.map(&String.trim/1)
+        |> Enum.reject(&(&1 == ""))
+        |> case do
+          [] -> :empty
+          _items -> :present
+        end
+      end
+    end
+    """
+    |> to_source_file("lib/example.ex")
+    |> run_check(BlockPipe)
+    |> assert_issue(%{trigger: "|>"})
+  end
+
   test "registers custom Credo checks" do
-    assert {CodeStyle.Check.Design.NoDatabaseConstraints, []} in CodeStyle.checks()
     assert {RepoInsideLoop, []} in CodeStyle.checks()
   end
 
