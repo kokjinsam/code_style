@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-13
+
+### Added
+
+- Added curated `jump_credo_checks`, `credo_mox`, and
+  `forge_credo_checks` dependencies with explicit allowlists.
+- Added `CodeStyle.Check.Warning.EnvironmentVariableAccess` to keep direct OS
+  environment reads out of `lib/` application source while allowing the
+  configuration boundary under `config/`.
+- Added policy tests that pin the exact enabled third-party check sets.
+
+### Changed
+
+- Reframed CodeStyle as shared deterministic Elixir code-quality policy rather
+  than a collection of personal Credo checks.
+- Tightened the ExSlop policy after auditing enabled refactor and optimization
+  checks for semantic safety.
+- Kept `RepoInsideLoop` as the single source-level owner of Repo calls inside
+  repeated execution.
+
+### Removed
+
+- Removed ExSlop refactor checks whose matcher does not establish a safe or
+  sufficiently general rewrite, including `ReduceAsMap`, `ListLast`,
+  `IdentityPassthrough`, `WithIdentityElse`, `SortThenReverse`,
+  `StringConcatInReduce`, `RedundantBooleanIf`, `FlatMapFilter`,
+  `SortThenAt`, `ListFold`, and `PreferEnumSlice`.
+- Removed `MapIntoLiteral` from the Credo policy because Styler owns that
+  mechanical rewrite.
+- Removed `TryRescueWithSafeAlternative` because its local matcher cannot
+  prove that changing exception handling preserves behavior.
+
+
 ## [0.1.2] - 2026-10-13
 
 ### Changed
