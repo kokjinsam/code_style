@@ -31,7 +31,11 @@ defmodule CodeStyle.Check.Warning.EnvironmentVariableAccess do
 
   def run(%SourceFile{}, _params), do: []
 
-  defp traverse({{:., _dot_meta, [{:__aliases__, _alias_meta, [:System]}, function]}, meta, _arguments} = ast, issues, issue_meta)
+  defp traverse(
+         {{:., _dot_meta, [{:__aliases__, _alias_meta, [:System]}, function]}, meta, _arguments} = ast,
+         issues,
+         issue_meta
+       )
        when function in @env_functions do
     {ast,
      [
