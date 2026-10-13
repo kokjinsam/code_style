@@ -139,7 +139,37 @@ defmodule CodeStyle do
   ]
 
   @code_style_checks [
+    {CodeStyle.Check.Warning.EnvironmentVariableAccess, []},
     {CodeStyle.Check.Warning.RepoInsideLoop, []}
+  ]
+
+  @jump_checks [
+    {Jump.CredoChecks.AssertElementSelectorCanNeverFail, []},
+    {Jump.CredoChecks.AvoidFunctionLevelElse, []},
+    {Jump.CredoChecks.AvoidModifyingStructBeforeChangeset, []},
+    {Jump.CredoChecks.AvoidSocketAssignsInTest, []},
+    {Jump.CredoChecks.ConditionalAssertion, []},
+    {Jump.CredoChecks.LiveViewFormCanBeRehydrated, []},
+    {Jump.CredoChecks.LiveViewPubSubRequiresConnected, []},
+    {Jump.CredoChecks.NoManualContentDisposition, []},
+    {Jump.CredoChecks.SafeBinaryToTerm, []},
+    {Jump.CredoChecks.UndeclaredExternalResource, []},
+    {Jump.CredoChecks.WeakAssertion, []}
+  ]
+
+  @credo_mox_checks [
+    {CredoMox.Checks.UnverifiedMox, [files: %{included: ["**/*_test.exs"]}]}
+  ]
+
+  @forge_checks [
+    {ForgeCredoChecks.FilterMap, []},
+    {ForgeCredoChecks.RejectMap, []},
+    {ForgeCredoChecks.MapReject, []},
+    {ForgeCredoChecks.MapGetWithOr, []},
+    {ForgeCredoChecks.InconsistentParamNames, []},
+    {ForgeCredoChecks.NamespaceTrespassing, []},
+    {ForgeCredoChecks.NoSourceInspectionInTest, []},
+    {ForgeCredoChecks.NoDetsInfoOpenGuard, []}
   ]
 
   @migration_checks [
@@ -149,10 +179,7 @@ defmodule CodeStyle do
   @ex_slop_opt_in_checks [
     {ExSlop.Check.Readability.DocFalseOnPublicFunction, []},
     {ExSlop.Check.Readability.ObviousComment, []},
-    {ExSlop.Check.Refactor.LengthInGuard, []},
-    {ExSlop.Check.Refactor.ListFold, []},
-    {ExSlop.Check.Refactor.ListLast, []},
-    {ExSlop.Check.Refactor.PreferEnumSlice, []}
+    {ExSlop.Check.Refactor.LengthInGuard, []}
   ]
 
   @ex_slop_recommended_checks [
@@ -164,18 +191,8 @@ defmodule CodeStyle do
     {ExSlop.Check.Warning.DualKeyAccess, []},
     {ExSlop.Check.Refactor.FilterNil, []},
     {ExSlop.Check.Refactor.RejectNil, []},
-    {ExSlop.Check.Refactor.ReduceAsMap, []},
-    {ExSlop.Check.Refactor.MapIntoLiteral, []},
-    {ExSlop.Check.Refactor.IdentityPassthrough, []},
-    {ExSlop.Check.Refactor.IdentityMap, []},
-    {ExSlop.Check.Refactor.TryRescueWithSafeAlternative, []},
-    {ExSlop.Check.Refactor.WithIdentityElse, []},
     {ExSlop.Check.Refactor.WithIdentityDo, []},
-    {ExSlop.Check.Refactor.SortThenReverse, []},
-    {ExSlop.Check.Refactor.StringConcatInReduce, []},
     {ExSlop.Check.Refactor.ReduceMapPut, []},
-    {ExSlop.Check.Refactor.RedundantBooleanIf, []},
-    {ExSlop.Check.Refactor.FlatMapFilter, []},
     {ExSlop.Check.Refactor.LengthComparison, []},
     {ExSlop.Check.Readability.NarratorDoc, []},
     {ExSlop.Check.Readability.BoilerplateDocParams, []},
@@ -183,13 +200,15 @@ defmodule CodeStyle do
     {ExSlop.Check.Refactor.RedundantEnumJoinSeparator, []},
     {ExSlop.Check.Refactor.GraphemesLength, []},
     {ExSlop.Check.Refactor.ManualStringReverse, []},
-    {ExSlop.Check.Refactor.SortThenAt, []},
     {ExSlop.Check.Refactor.SortForTopK, []},
     {ExSlop.Check.Refactor.ExplicitSumReduce, []}
   ]
 
   @checks @credo_checks ++
             @code_style_checks ++
+            @jump_checks ++
+            @credo_mox_checks ++
+            @forge_checks ++
             @migration_checks ++
             @ex_slop_recommended_checks ++
             @ex_slop_opt_in_checks
