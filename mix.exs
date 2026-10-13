@@ -1,7 +1,7 @@
 defmodule CodeStyle.MixProject do
   use Mix.Project
 
-  @version "0.1.2"
+  @version "0.2.0"
   @source_url "https://github.com/kokjinsam/code_style"
 
   def project do
@@ -9,7 +9,7 @@ defmodule CodeStyle.MixProject do
       app: :code_style,
       version: @version,
       elixir: "~> 1.18",
-      description: "Personal Credo checks for Elixir codebases.",
+      description: "Shared deterministic Elixir code-quality policy and Credo checks.",
       source_url: @source_url,
       homepage_url: @source_url,
       aliases: aliases(),
@@ -35,8 +35,11 @@ defmodule CodeStyle.MixProject do
   defp deps do
     [
       {:credo, "~> 1.7", runtime: false},
+      {:credo_mox, "~> 0.1.3", runtime: false},
       {:excellent_migrations, "~> 0.1.10", runtime: false},
       {:ex_slop, "~> 0.4.2", runtime: false},
+      {:forge_credo_checks, "~> 0.9.0", runtime: false},
+      {:jump_credo_checks, "~> 0.6.0", runtime: false},
       {:ex_doc, "~> 0.40.0", only: :dev, runtime: false},
       {:styler, "~> 1.11", only: [:dev, :test], runtime: false}
     ]
