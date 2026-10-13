@@ -37,8 +37,7 @@ defmodule CodeStyle.Check.Warning.EnvironmentVariableAccess do
      [
        format_issue(
          issue_meta,
-         message:
-           "Read OS environment variables from config/ and consume application configuration from lib/.",
+         message: "Read OS environment variables from config/ and consume application configuration from lib/.",
          trigger: "System.#{function}",
          line_no: meta[:line]
        )
